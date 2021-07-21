@@ -3,8 +3,11 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import styled from 'styled-components';
 
-import TextField from '../textInput/TextField';
 import { ASSETS } from '../../types/AssetRoutes';
+import { searchRecipe } from '../../api/recipe';
+
+import TextField from '../textInput/TextField';
+
 
 const StyledForm = styled.form`
     background: ${({ theme }) => theme.colors.yellow};
@@ -84,9 +87,17 @@ const SearchForm = () => {
     }
 
     const onSubmit = async (values: IFormValues) => {
+        console.log('being called')
         const ingredients = Object.values(values).filter(value => value !== "");
 
         // add the api call here
+        try {
+            const recipes = await searchRecipe(ingredients)
+            console.log(recipes)
+        } catch(e) {
+            console.log(e)
+        }
+
     }
 
     const {
@@ -122,7 +133,7 @@ const SearchForm = () => {
                         <TextField
                             key={name}
                             name={name}
-                            value={ingredient[1]}
+                            //value={ingredient[1]}
                             onChange={handleChange}
                             onBlur={handleBlur}
                             error={touched && error ? errorArr[i][1] : ""}

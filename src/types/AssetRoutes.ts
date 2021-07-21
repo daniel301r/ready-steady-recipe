@@ -1,11 +1,15 @@
-enum ICON_ROUTES {
+
 /*
+enum ICON_ROUTES {
+
     BOTTOM_BAR = "/images/icons/bottomBar/",
     NAVBAR = "/images/icons/navbar/",
     STRIPE = "/images/icons/stripeOnboarding/",
 
-*/
+
 }
+
+*/
 
 export const ASSETS = {
     ICONS: {
