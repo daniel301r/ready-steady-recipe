@@ -2,12 +2,13 @@ import { useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import styled from 'styled-components';
+import { useHistory } from 'react-router-dom';
 
 import { ASSETS } from '../../types/AssetRoutes';
+import { IIngredientSearchValues } from '../../types/IIngredientSearchValues';
 import { searchRecipe } from '../../api/recipe';
 
 import TextField from '../textInput/TextField';
-
 
 const StyledForm = styled.form`
     background: ${({ theme }) => theme.colors.yellow};
@@ -38,15 +39,7 @@ const StyledIcon = styled.img`
     height: 50px;
 `;
 
-interface IFormValues {
-    ingredient1: string;
-    ingredient2: string;
-    ingredient3: string;
-    ingredient4: string;
-    ingredient5: string;
-}
-
-const initialValues: IFormValues = {
+const initialValues: IIngredientSearchValues = {
     ingredient1: "",
     ingredient2: "",
     ingredient3: "",
@@ -67,6 +60,8 @@ const SearchForm = () => {
 
     const [ingredientsArr, setIngredientsArr] = useState<{ [x: string]: string; }[]>([{ ingredient1: "" }]);
 
+    let history = useHistory();
+
     const addIngredient = () => {
 
         if(ingredientsArr.length < 5){
@@ -86,18 +81,22 @@ const SearchForm = () => {
 
     }
 
-    const onSubmit = async (values: IFormValues) => {
-        console.log('being called')
-        const ingredients = Object.values(values).filter(value => value !== "");
+    const onSubmit = async (values: IIngredientSearchValues) => {
 
-        // add the api call here
+        const ingredientString = Object.values(values).filter(value => value !== "").join(',');
+
+        console.log("ingredientString", ingredientString)
+
         try {
-            const recipes = await searchRecipe(ingredients)
-            console.log(recipes)
-        } catch(e) {
-            console.log(e)
-        }
+            const { data } = await searchRecipe(ingredientString)
+            // send recipes somewhere
+            console.log(data)
 
+            // history.push('/ingredientSearch/results')
+
+        } catch(e) {
+            console.log('error in front end', e)
+        }
     }
 
     const {

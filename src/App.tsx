@@ -1,9 +1,8 @@
-import {
-    createGlobalStyle,
-    ThemeProvider,
-    DefaultTheme
-} from "styled-components";
-import SearchForm from './components/ingredientSearch/SearchForm';
+import { createGlobalStyle, ThemeProvider, DefaultTheme } from "styled-components";
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+
+import IngredientSearch from "./pages/IngredientSearch";
+import PageNotFound from "./pages/PageNotFound";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -32,14 +31,20 @@ const theme: DefaultTheme = {
 }
 
 function App() {
-  return (
-    <div className="App">
-        <ThemeProvider theme={theme}>
-            <GlobalStyle />
-                <SearchForm />
-        </ThemeProvider>
-    </div>
-  );
+
+    return (
+        <div className="App">
+            <ThemeProvider theme={theme}>
+                <GlobalStyle />
+                    <Router>
+                        <Switch>
+                            <Route path='/ingredientSearch/:component' exact component={IngredientSearch}/>
+                            <Route path='*' exact component={PageNotFound}/>
+                        </Switch>
+                    </Router>
+            </ThemeProvider>
+        </div>
+    );
 };
 
 export default App;
